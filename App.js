@@ -3,18 +3,24 @@ import PageTarefas from "./src/pages/PageTarefas";
 import PageContador from "./src/pages/PageContador";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from '@expo/vector-icons';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Entypo } from "@expo/vector-icons";
 
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <PaperProvider>
-        <Tab.Navigator>
-          <Tab.Screen name="Contador" component={PageContador} />
-          <Tab.Screen name="Tarefas" component={PageTarefas} />
-        </Tab.Navigator>
+        <Stack.Navigator>
+          <Stack.Screen name="Contador"
+            component={PageContador}
+          />
+          <Stack.Screen name="Tarefas"
+            component={PageTarefas}
+          />
+        </Stack.Navigator>
       </PaperProvider>
     </NavigationContainer>
   );
