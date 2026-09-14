@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View } from "react-native";
-import { Card, Text } from "react-native-paper";
+import { Button, Card, Text } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 function PageTarefas() {
+    const navigation = useNavigation()
     const [carregando, setCarregando] = useState(false)
     const [tarefas, setTarefas] = useState([])
 
@@ -45,6 +47,7 @@ function PageTarefas() {
                     />
                 }
             />
+            <Button onPress={() => navigation.goBack()}>Voltar</Button>
         </SafeAreaView>
     )
 }
