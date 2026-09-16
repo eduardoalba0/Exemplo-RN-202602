@@ -1,26 +1,35 @@
 import { PaperProvider } from "react-native-paper";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import PageTarefas from "./src/pages/PageTarefas";
 import PageContador from "./src/pages/PageContador";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Entypo } from "@expo/vector-icons";
+import PageConsultaDolar from "./src/pages/PageConsultaDolar";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tabs = createBottomTabNavigator()
 
 export default function App() {
   return (
     <NavigationContainer>
       <PaperProvider>
-        <Stack.Navigator>
-          <Stack.Screen name="Contador"
+        <Tabs.Navigator
+          initialRouteName="Contador"
+        >
+          <Tabs.Screen name="Contador"
             component={PageContador}
+            options={{
+              tabBarIcon: () => <FontAwesome5 name="calculator" color="black" />
+            }}
           />
-          <Stack.Screen name="Tarefas"
+          <Tabs.Screen name="Tarefas"
             component={PageTarefas}
+            options={{
+              tabBarIcon: () => <FontAwesome5 name="list" color="black" />
+            }}
           />
-        </Stack.Navigator>
+        </Tabs.Navigator>
       </PaperProvider>
     </NavigationContainer>
   );
