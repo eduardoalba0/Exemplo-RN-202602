@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import PageTarefas from "./src/pages/PageTarefas";
 import PageContador from "./src/pages/PageContador";
-import PageConsultaDolar from "./src/pages/PageConsultaDolar";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
