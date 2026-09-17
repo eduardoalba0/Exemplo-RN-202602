@@ -9,7 +9,9 @@ function DrawerNavigator() {
         <Drawer.Navigator initialRouteName='Home'>
             <Drawer.Screen name="Home" component={StackNavigator}
                 options={{
-                    drawerIcon: () => <MaterialIcons name='home' size={24} color="black" />
+                    drawerIcon: () => (
+                        <MaterialIcons name='home' size={24} color="black" />
+                    )
                 }}
             />
         </Drawer.Navigator>

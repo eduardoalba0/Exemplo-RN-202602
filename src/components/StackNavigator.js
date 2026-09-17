@@ -8,7 +8,7 @@ function StackNavigator() {
         <Stack.Navigator
             screenOptions={{
                 headerShown: false
-            }}        >
+            }}>
             <Stack.Screen name="Início" component={TabNavigator} />
         </Stack.Navigator>
     )
