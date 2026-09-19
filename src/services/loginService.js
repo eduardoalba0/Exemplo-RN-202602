@@ -1,25 +1,36 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase-init';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../../firebase-init';
+
+const COLLECTION_NAME = "Usuarios"
 
 function useAuthService() {
 
-    const cadastrarEmailSenha = async (email, senha) => {
+    /**
+     * @param {import('../types/Usuario').Usuario} usuario 
+     */
+    const cadastrarEmailSenha = async (usuario) => {
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
-            console.log(userCredential)
+            const userCredential = await createUserWithEmailAndPassword(auth, usuario.email, usuario.senha);
+            usuario.id = userCredential.user.uid;
+            const { senha, ...dados } = usuario;
+            const docRef = doc(db, COLLECTION_NAME, usuario.id);
+            await setDoc(docRef, dados);
         } catch (error) {
-            console.error(error);
-            alert("Falha ao cadastrar. Tente novamente mais tarde.")
+            throw error;
         }
     }
 
-    const loginEmailSenha = async (email, senha) => {
+    /**
+     * @param {import('../types/Usuario').Usuario} usuario 
+     */
+    const loginEmailSenha = async (usuario) => {
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, senha);
-            console.log(userCredential)
+            const userCredential = await signInWithEmailAndPassword(auth, usuario.email, usuario.senha);
+            console.log("Usuário logado:", userCredential.user.uid);
+            return userCredential;
         } catch (error) {
-            console.error(error);
-            alert("Falha ao logar. Tente novamente mais tarde.")
+            throw error;
         }
     }
 

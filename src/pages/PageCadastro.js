@@ -3,33 +3,47 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Card, TextInput, Button } from "react-native-paper";
 import useAuthService from "../services/loginService";
 import { useNavigation } from "@react-navigation/native";
+import { createUsuario } from "../types/Usuario";
 
 function PageCadastro() {
-    const [email, setEmail] = useState("")
-    const [senha, setSenha] = useState("")
+    const [usuario, setUsuario] = useState(createUsuario());
+    const [loading, setLoading] = useState(false);
 
     const { cadastrarEmailSenha } = useAuthService();
     const navigation = useNavigation();
 
+
+    async function cadastrar() {
+        setLoading(true);
+        try {
+            await cadastrarEmailSenha(usuario)
+        } catch (e) {
+            console.error(e)
+            alert("Erro ao cadastrar. Tente novamente mais tarde.")
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <ScrollView>
             <Card>
-                <Card.Title>Login</Card.Title>
+                <Card.Title>Cadastro</Card.Title>
                 <Card.Content>
                     <TextInput
                         label="E-mail"
-                        value={email}
+                        value={usuario.email}
                         keyboardType="email-address"
                         autoCapitalize="none"
-                        onChangeText={text => setEmail(text)}
+                        onChangeText={text => setUsuario({ ...usuario, email: text })}
                     />
                     <TextInput
                         label="Senha"
-                        value={senha}
+                        value={usuario.senha}
                         secureTextEntry={true}
-                        onChangeText={text => setSenha(text)}
+                        onChangeText={text => setUsuario({ ...usuario, senha: text })}
                     />
-                    <Button onPress={() => cadastrarEmailSenha(email, senha)}>Cadastrar</Button>
+                    <Button loading={loading} onPress={() => cadastrar()}>Cadastrar</Button>
                     <Button onPress={() => navigation.navigate("Login")}>Login</Button>
                 </Card.Content>
             </Card>
