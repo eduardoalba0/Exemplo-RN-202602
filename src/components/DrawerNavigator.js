@@ -1,20 +1,41 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import StackNavigator from './StackNavigator';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
+import MainStackNavigator from './MainStackNavigator';
 
 const Drawer = createDrawerNavigator();
 
-function DrawerNavigator() {
+
+function DrawerContent(props) {
     return (
-        <Drawer.Navigator initialRouteName='Home'>
-            <Drawer.Screen name="Home" component={StackNavigator}
+        <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <DrawerItem
+                label="Logout"
+                icon={() => (
+                    <MaterialIcons name='logout' size={24} color='red' />
+                )}
+                onPress={() => props.handleLogout()}
+            />
+        </DrawerContentScrollView>
+    )
+}
+
+function DrawerNavigator(props) {
+
+    return (
+        <Drawer.Navigator
+            initialRouteName='Home'
+            drawerContent={(navProps) => <DrawerContent {...navProps} handleLogout={props.handleLogout} />}>
+            <Drawer.Screen name="Home" component={MainStackNavigator}
                 options={{
+                    drawerLabel: "Início",
+                    headerTitle: "Início",
                     drawerIcon: () => (
                         <MaterialIcons name='home' size={24} color="black" />
                     )
                 }}
             />
-        </Drawer.Navigator>
+        </Drawer.Navigator >
     )
 }
 

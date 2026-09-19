@@ -3,7 +3,7 @@ import TabNavigator from "./TabNavigator";
 
 const Stack = createNativeStackNavigator();
 
-function StackNavigator() {
+function MainStackNavigator() {
     return (
         <Stack.Navigator
             screenOptions={{
@@ -14,4 +14,4 @@ function StackNavigator() {
     )
 }
 
-export default StackNavigator;
+export default MainStackNavigator;
