@@ -3,13 +3,13 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Card, TextInput, Button } from "react-native-paper";
 import useAuthService from "../services/loginService";
 import { useNavigation } from "@react-navigation/native";
-import { createUsuario } from "../types/Usuario";
+import { Usuario } from "../models/Usuario";
 
 function PageLogin() {
-    const [usuario, setUsuario] = useState(createUsuario());
+    const [usuario, setUsuario] = useState(new Usuario());
     const [loading, setLoading] = useState(false);
 
-    const { loginEmailSenha } = useAuthService();
+    const { loginEmailSenha, recuperarSenha } = useAuthService();
     const navigation = useNavigation();
 
     async function logar() {
@@ -45,6 +45,7 @@ function PageLogin() {
                     />
                     <Button onPress={() => navigation.navigate("Cadastro")}>Cadastrar</Button>
                     <Button loading={loading} onPress={() => logar()}>Login</Button>
+                    <Button loading={loading} onPress={() => recuperarSenha(usuario.email)}>Recuperar Senha</Button>
                 </Card.Content>
             </Card>
         </ScrollView>

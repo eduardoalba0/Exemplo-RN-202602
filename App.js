@@ -15,7 +15,7 @@ export default function App() {
 
   async function registrarOnAuthChanged() {
     onAuthStateChanged(auth, (usuario) => {
-      if (usuario) {
+      if (usuario && usuario.emailVerified) {
         setUsuarioLogado(usuario);
       } else {
         setUsuarioLogado(null);
