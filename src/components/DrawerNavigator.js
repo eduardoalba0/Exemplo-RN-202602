@@ -2,6 +2,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import StackNavigator from "./StackNavigator";
 import { Ionicons } from "@expo/vector-icons";
 import PageIFPR from "../pages/PageIFPR";
+import PageCadastro from "../pages/PageCadastro";
+import PageLogin from "../pages/PageLogin";
 
 const Drawer = createDrawerNavigator();
 
