@@ -7,10 +7,11 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../../firebase-init';
-import { Usuario, usuarioConverter } from '../models/Usuario';
+import { Usuario } from '../models/Usuario';
+import { createConverter } from '../utils/firebaseConverter';
 
 const COLLECTION_NAME = "Usuarios";
-const usuariosCollection = collection(db, COLLECTION_NAME).withConverter(usuarioConverter)
+const usuariosCollection = collection(db, COLLECTION_NAME).withConverter(createConverter(Usuario))
 
 function useAuthService() {
 
@@ -28,6 +29,7 @@ function useAuthService() {
             await signOut(auth);
 
         } catch (error) {
+            console.error(error)
             throw error;
         }
     }

@@ -1,32 +1,25 @@
-export default class BaseModel {
+export default abstract class BaseModel {
     id: string | null;
     criadoEm: Date;
     atualizadoEm: Date;
 
-    constructor(dados: Partial<BaseModel> = {}) {
-        this.id = dados.id || null;
-        this.criadoEm = dados.criadoEm || new Date();
-        this.atualizadoEm = dados.atualizadoEm || new Date();
+    constructor(dados?: Partial<BaseModel>) {
+        this.id = dados?.id || null;
+        this.criadoEm = new Date();
+        this.atualizadoEm = new Date();
     }
 
-    paraObjetoPuro(): Record<string, any> {
+    toFirestore(): any {
         const { id, ...dados } = this;
         return dados;
     }
-}
 
-export const baseConverter = <T>() => ({
-    toFirestore: (dados: T): Record<string, any> => {
-        return { ...dados };
-    },
-    fromFirestore: (snapshot: any, options: any): T => {
+    fromFirestore(snapshot: any, options: any): BaseModel {
         const dados = snapshot.data(options);
-
-        return {
-            id: snapshot.id,
-            ...dados,
-            criadoEm: dados.criadoEm?.toDate(),
-            atualizadoEm: dados.atualizadoEm?.toDate()
-        } as T;
+        this.id = snapshot.id;
+        this.criadoEm = dados.criadoEm?.toDate();
+        this.atualizadoEm = dados.atualizadoEm?.toDate()
+        return this;
     }
-});
+
+}

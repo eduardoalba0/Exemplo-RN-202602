@@ -5,28 +5,15 @@ export class Usuario extends BaseModel {
     email: string;
     senha: string;
 
-    constructor(dados: Partial<Usuario> = {}) {
+    constructor(dados?: Partial<Usuario>) {
         super(dados);
-        this.nome = dados.nome;
-        this.email = dados.email;
-        this.senha = dados.senha;
+        this.nome = dados?.nome || null
+        this.email = dados?.email || null
+        this.senha = dados?.senha || null
+    }
+
+    override toFirestore(): any {
+        const { senha, ...dadosPuros } = this;
+        return dadosPuros;
     }
 }
-
-export const usuarioConverter = {
-    toFirestore: (usuario: Usuario) => {
-        const { senha, ...usuarioObjeto } = usuario;
-        return usuarioObjeto;
-    },
-    fromFirestore: (snapshot: any, options: any): Usuario => {
-        const dados = snapshot.data(options);
-
-        return new Usuario({
-            id: snapshot.id,
-            nome: dados.nome,
-            email: dados.email,
-            criadoEm: dados.criadoEm?.toDate(),
-            atualizadoEm: dados.atualizadoEm?.toDate()
-        });
-    }
-};
