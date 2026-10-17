@@ -31,6 +31,12 @@ function PageCadastro() {
             <Card>
                 <Card.Content>
                     <TextInput
+                        label="Nome Completo"
+                        placeholder="Insira seu nome completo."
+                        value={usuario.nome}
+                        onChangeText={(text) => setUsuario({ ...usuario, nome: text })}
+                    />
+                    <TextInput
                         label="E-mail:"
                         placeholder="Insira o seu e-mail."
                         value={usuario.email}

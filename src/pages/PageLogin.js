@@ -2,12 +2,14 @@ import { ScrollView } from "react-native";
 import { Button, Text, TextInput, Card } from "react-native-paper";
 import useAuthService from "../services/loginService";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 function PageLogin() {
     const [usuario, setUsuario] = useState({})
     const [secureText, setSecureText] = useState(true)
     const [loading, setLoading] = useState(false)
     const { loginEmailSenha, recuperarSenha } = useAuthService()
+    const navigation = useNavigation()
 
     async function logarUsuario() {
         try {
@@ -66,6 +68,8 @@ function PageLogin() {
                     <Button loading={loading}
                         onPress={() => recuperarSenhaUsuario()}>
                         Recuperar Senha</Button>
+                    <Text>Não tem cadastro?</Text>
+                    <Button onPress={() => navigation.navigate("Cadastro")}>Cadastrar</Button>
                 </Card.Content>
             </Card>
         </ScrollView>
