@@ -1,4 +1,15 @@
-import { collection, CollectionReference, setDoc, doc, addDoc, getDoc, getDocs, deleteDoc, where, query, WhereFilterOp } from "firebase/firestore"
+import { collection, 
+    CollectionReference, 
+    setDoc, 
+    doc, 
+    addDoc, 
+    getDoc, 
+    getDocs, 
+    deleteDoc, 
+    where, 
+    query, 
+    WhereFilterOp 
+} from "firebase/firestore"
 import { db } from "../../firebase-init"
 import BaseModel from "../models/BaseModel"
 import firebaseConverter from "../converters/firebaseConverter"

@@ -1,5 +1,3 @@
-import BaseModel from "./BaseModel";
-
 export class Endereco {
     private cep: string
     private logradouro: string
@@ -22,3 +20,4 @@ export class Endereco {
         return this.logradouro;
     }
 }
+
