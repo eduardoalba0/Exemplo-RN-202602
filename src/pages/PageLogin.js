@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native";
 import { Card, TextInput, Button } from "react-native-paper";
 import useAuthService from "../services/loginService";
 import { useNavigation } from "@react-navigation/native";
@@ -12,10 +12,19 @@ function PageLogin() {
     const { loginEmailSenha, recuperarSenha } = useAuthService();
     const navigation = useNavigation();
 
+
+    function handleOnChangeText(campo, texto) {
+        const novoUsuario = new Usuario({
+            ...usuario,
+            [campo]: texto
+        })
+        setUsuario(novoUsuario);
+    }
+
     async function logar() {
         setLoading(true);
         try {
-            await loginEmailSenha(usuario)
+            const usuarioAutenticado = await loginEmailSenha(usuario)
         } catch (e) {
             console.error(e)
             alert("Falha ao realizar login. Tente novamente mais tarde.")
@@ -35,17 +44,17 @@ function PageLogin() {
                         value={usuario.email}
                         keyboardType="email-address"
                         autoCapitalize="none"
-                        onChangeText={text => setUsuario({ ...usuario, email: text })}
+                        onChangeText={text => handleOnChangeText("email", text)}
                     />
                     <TextInput
                         label="Senha"
                         value={usuario.senha}
                         secureTextEntry={true}
-                        onChangeText={text => setUsuario({ ...usuario, senha: text })}
+                        onChangeText={text => handleOnChangeText("senha", text)}
                     />
                     <Button onPress={() => navigation.navigate("Cadastro")}>Cadastrar</Button>
                     <Button loading={loading} onPress={() => logar()}>Login</Button>
-                    <Button loading={loading} onPress={() => recuperarSenha(usuario.email)}>Recuperar Senha</Button>
+                    <Button onPress={() => recuperarSenha(usuario.email)}>Recuperar Senha</Button>
                 </Card.Content>
             </Card>
         </ScrollView>
