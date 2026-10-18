@@ -1,5 +1,3 @@
-import BaseModel from "./BaseModel";
-
 export class Endereco {
     private cep: string
     private logradouro: string
