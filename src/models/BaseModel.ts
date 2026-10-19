@@ -1,7 +1,7 @@
 export default abstract class BaseModel {
-    id: string | null;
-    criadoEm: Date;
-    atualizadoEm: Date;
+    private id: string | null;
+    private criadoEm: Date;
+    private atualizadoEm: Date;
 
     constructor(dados?: any) {
         this.id = dados?.id || null;
@@ -20,5 +20,17 @@ export default abstract class BaseModel {
         this.criadoEm = dados.criadoEm?.toDate();
         this.atualizadoEm = dados.atualizadoEm?.toDate()
         return this;
+    }
+
+    getId(): string {
+        return this.id;
+    }
+
+    getCriadoEm(): Date {
+        return this.criadoEm;
+    }
+
+    getAtualizadoEm(): Date {
+        return this.atualizadoEm;
     }
 }
