@@ -1,29 +1,35 @@
 import BaseModel from "./BaseModel";
+import { Endereco } from "./Endereco";
 
 export default class Usuario extends BaseModel {
-
     private nome: string;
     private email: string;
     private senha: string;
+    private endereco: Endereco;
 
     constructor(dados?: any) {
         super(dados) // Chama o construtor da BaseModel
         this.nome = dados?.nome || null
         this.email = dados?.email || null
         this.senha = dados?.senha || null
+        this.endereco = dados?.endeeco || new Endereco()
     }
 
 
     override toFirestore(): any {
         const { senha, ...dados } = this
-        return dados
+        return {
+            ...dados,
+            endereco: this.endereco.toFirestore()
+        }
     }
 
-    override fromFirestore(snapshot, options): Usuario {
+    override fromFirestore(snapshot: any, options: any): Usuario {
         super.fromFirestore(snapshot, options)
         const dados = snapshot.data(options)
         this.nome = dados.nome
         this.email = dados.email
+        this.endereco = new Endereco(dados.endereco)
         return this
     }
 
@@ -35,6 +41,10 @@ export default class Usuario extends BaseModel {
     }
     getSenha() {
         return this.senha
+    }
+
+    getEndereco() {
+        return this.endereco
     }
 
 }
