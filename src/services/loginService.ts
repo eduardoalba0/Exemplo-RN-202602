@@ -18,7 +18,7 @@ function useAuthService() {
             if (!usuario.getSenha()) throw new Error("Senha é obrigatória para o cadastro.");
 
             const userCredential = await createUserWithEmailAndPassword(auth, usuario.getEmail(), usuario.getSenha());
-            usuario.id = userCredential.user.uid;
+            usuario.setId(userCredential.user.uid);
 
             await repository.salvar(usuario);
 

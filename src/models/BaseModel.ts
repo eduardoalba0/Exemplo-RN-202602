@@ -33,4 +33,12 @@ export default abstract class BaseModel {
     getAtualizadoEm(): Date {
         return this.atualizadoEm;
     }
+
+    setId(id: string | null) {
+        this.id = id;
+    }
+
+    setAtualizadoEm(atualizadoEm: Date) {
+        this.atualizadoEm = atualizadoEm;
+    }
 }

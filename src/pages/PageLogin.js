@@ -29,8 +29,22 @@ function PageLogin() {
             const usuarioAutenticado = await loginEmailSenha(usuario);
             dispatch(setUsuarioLogado(usuarioAutenticado));
         } catch (e) {
-            console.error(e)
-            alert("Falha ao realizar login. Tente novamente mais tarde.")
+            switch (e.code) {
+                case 'auth/invalid-credential':
+                    alert("E-mail ou senha incorretos.");
+                    break;
+                case 'auth/user-disabled':
+                    alert("Esta conta foi desativada. Entre em contato com o suporte.");
+                    break;
+                case 'auth/too-many-requests':
+                    alert("Muitas tentativas falhas. Tente novamente mais tarde.");
+                    break;
+                case 'auth/network-request-failed':
+                    alert("Sem conexão com a internet.");
+                    break;
+                default:
+                    alert(e.message)
+            }
         } finally {
             setLoading(false);
         }
@@ -44,14 +58,14 @@ function PageLogin() {
                 <Card.Content>
                     <TextInput
                         label="E-mail"
-                        value={usuario.email}
+                        value={usuario.getEmail()}
                         keyboardType="email-address"
                         autoCapitalize="none"
                         onChangeText={text => handleOnChangeText("email", text)}
                     />
                     <TextInput
                         label="Senha"
-                        value={usuario.senha}
+                        value={usuario.getSenha()}
                         secureTextEntry={true}
                         onChangeText={text => handleOnChangeText("senha", text)}
                     />

@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import DrawerNavigator from "./src/components/DrawerNavigator";
 import LoginStackNavigator from './src/components/LoginStackNavigator';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -13,13 +12,17 @@ import { UsuarioRepository } from './src/repositories/UsuarioRepository';
 
 export default function App() {
   const dispatch = useDispatch();
-  const usuarioLogado = useSelector((state) => state.usuario.usuarioLogado);
+  const usuarioLogado = useSelector((state) => state.usuario?.usuarioLogado);
 
   async function registrarOnAuthChanged() {
     onAuthStateChanged(auth, async (usuario) => {
       if (usuario && usuario.emailVerified) {
         const usuarioAutenticado = await new UsuarioRepository().buscarId(usuario.uid);
-        dispatch(setUsuarioLogado(usuarioAutenticado));
+        if (usuarioAutenticado) {
+          dispatch(setUsuarioLogado(usuarioAutenticado));
+        } else {
+          throw new Error("Dados do usuário não encontrados no banco de dados.");
+        }
       } else {
         dispatch(setUsuarioLogado(null));
       }
@@ -35,7 +38,7 @@ export default function App() {
   }, [])
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView>
       <NavigationContainer>
         <PaperProvider>
           {

@@ -1,14 +1,15 @@
-import { collection, 
-    CollectionReference, 
-    setDoc, 
-    doc, 
-    addDoc, 
-    getDoc, 
-    getDocs, 
-    deleteDoc, 
-    where, 
-    query, 
-    WhereFilterOp 
+import {
+    collection,
+    CollectionReference,
+    setDoc,
+    doc,
+    addDoc,
+    getDoc,
+    getDocs,
+    deleteDoc,
+    where,
+    query,
+    WhereFilterOp
 } from "firebase/firestore"
 import { db } from "../../firebase-init"
 import BaseModel from "../models/BaseModel"
@@ -23,8 +24,8 @@ export abstract class BaseRepository<T extends BaseModel> {
     }
 
     async salvar(entidade: T): Promise<T> {
-        if (entidade.id) {
-            const docRef = doc(this.collectionRef, entidade.id);
+        if (entidade.getId()) {
+            const docRef = doc(this.collectionRef, entidade.getId());
             await setDoc(docRef, entidade);
             return entidade;
         } else {
@@ -36,6 +37,7 @@ export abstract class BaseRepository<T extends BaseModel> {
     async buscarId(id: string): Promise<T | null> {
         const docRef = doc(this.collectionRef, id);
         const docSnap = await getDoc(docRef);
+        console.log("Id:" + id)
         return docSnap.exists() ? docSnap.data() as T : null;
     }
 

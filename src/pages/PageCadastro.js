@@ -41,14 +41,21 @@ function PageCadastro() {
             navigation.navigate("Login");
             alert("Usuário cadastrado com sucesso! Um e-mail foi enviado para confirmação.");
         } catch (e) {
-            if (e.code === 'auth/email-already-in-use') {
-                alert("Este e-mail já está cadastrado. Tente fazer login ou recuperar sua senha.");
-            } else if (e.code === 'auth/invalid-email') {
-                alert("O formato do e-mail digitado é inválido.");
-            } else if (e.code === 'auth/weak-password') {
-                alert("A senha deve ter pelo menos 6 caracteres.");
-            } else {
-                alert("Erro ao cadastrar. Tente novamente mais tarde.");
+            switch (e.code) {
+                case 'auth/email-already-in-use':
+                    alert("Este e-mail já está cadastrado. Tente fazer login ou recuperar sua senha.");
+                    break;
+                case 'auth/invalid-email':
+                    alert("O formato do e-mail digitado é inválido.");
+                    break;
+                case 'auth/weak-password':
+                    alert("A senha deve ter pelo menos 6 caracteres.");
+                    break;
+                case 'auth/network-request-failed':
+                    alert("Sem conexão com a internet.");
+                    break;
+                default:
+                    alert(e.message)
             }
         } finally {
             setLoading(false);
