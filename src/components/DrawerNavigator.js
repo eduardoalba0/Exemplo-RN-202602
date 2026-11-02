@@ -1,13 +1,30 @@
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import MainStackNavigator from './MainStackNavigator';
+import { useSelector } from 'react-redux';
+import { View } from 'react-native';
+import { Text, Avatar } from 'react-native-paper';
 
 const Drawer = createDrawerNavigator();
-
-
 function DrawerContent(props) {
+    const usuarioLogado = useSelector((state) => state.usuario?.usuarioLogado);
+    const nome = usuarioLogado ? usuarioLogado.getNome() : '';
+    const email = usuarioLogado ? usuarioLogado.getEmail() : '';
+
     return (
         <DrawerContentScrollView {...props}>
+            {usuarioLogado && (
+                <View>
+                    <Avatar.Text
+                        size={48}
+                        label={nome.length >= 2 ? nome.substring(0, 2).toUpperCase() : 'US'}
+                    />
+                    <View>
+                        <Text variant="titleMedium">{nome}</Text>
+                        <Text variant="bodySmall">{email}</Text>
+                    </View>
+                </View>
+            )}
             <DrawerItemList {...props} />
             <DrawerItem
                 label="Logout"
@@ -35,8 +52,8 @@ function DrawerNavigator(props) {
                     )
                 }}
             />
-        </Drawer.Navigator >
-    )
+        </Drawer.Navigator>
+    );
 }
 
 export default DrawerNavigator;

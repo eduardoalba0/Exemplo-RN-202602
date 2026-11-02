@@ -4,6 +4,8 @@ import { Card, TextInput, Button } from "react-native-paper";
 import useAuthService from "../services/loginService";
 import { useNavigation } from "@react-navigation/native";
 import { Usuario } from "../models/Usuario";
+import { useDispatch } from "react-redux";
+import { setUsuarioLogado } from "../slices/usuarioSlice";
 
 function PageLogin() {
     const [usuario, setUsuario] = useState(new Usuario());
@@ -11,7 +13,7 @@ function PageLogin() {
 
     const { loginEmailSenha, recuperarSenha } = useAuthService();
     const navigation = useNavigation();
-
+    const dispatch = useDispatch();
 
     function handleOnChangeText(campo, texto) {
         const novoUsuario = new Usuario({
@@ -24,7 +26,8 @@ function PageLogin() {
     async function logar() {
         setLoading(true);
         try {
-            const usuarioAutenticado = await loginEmailSenha(usuario)
+            const usuarioAutenticado = await loginEmailSenha(usuario);
+            dispatch(setUsuarioLogado(usuarioAutenticado));
         } catch (e) {
             console.error(e)
             alert("Falha ao realizar login. Tente novamente mais tarde.")

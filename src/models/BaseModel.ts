@@ -22,7 +22,7 @@ export default abstract class BaseModel {
         return this;
     }
 
-    getId(): string {
+    getId(): string | null {
         return this.id;
     }
 
