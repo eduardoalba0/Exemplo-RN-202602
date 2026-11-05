@@ -6,14 +6,22 @@ import {
     signOut
 } from 'firebase/auth';
 import { auth } from '../../firebase-init';
+import UsuarioRepository from '../repositories/UsuarioRepository';
+
+const usuarioRepository = new UsuarioRepository()
 
 function useAuthService() {
 
     const cadastrarEmailSenha = async (usuario) => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, usuario.email, usuario.senha);
+
+            usuario.setId(userCredential.user.uid)
+            await usuarioRepository.salvar(usuario)
+
             await sendEmailVerification(userCredential.user); // Se você precisa de confirmação de e-mail
             await signOut(auth); // Desloga o usuário após o cadastro
+
         } catch (error) {
             throw error;
         }

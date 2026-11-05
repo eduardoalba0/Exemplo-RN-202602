@@ -3,19 +3,43 @@ import { Button, Card, Text, TextInput } from "react-native-paper";
 import { useState } from "react";
 import useAuthService from "../services/loginService";
 import { useNavigation } from "@react-navigation/native";
+import Usuario from "../models/Usuario";
+import { Endereco } from "../models/Endereco";
 
 function PageCadastro() {
+    const [usuario, setUsuario] = useState(new Usuario())
+    const [endereco, setEndereco] = useState(new Endereco())
 
-    const [usuario, setUsuario] = useState({})
     const [secureText, setSecureText] = useState(true)
     const [loading, setLoading] = useState(false)
     const { cadastrarEmailSenha } = useAuthService();
     const navigation = useNavigation();
 
+
+    function handleOnChangeTextUsuario(campo, texto) {
+        const novoUsuario = new Usuario({
+            ...usuario,
+            [campo]: texto
+        })
+        setUsuario(novoUsuario)
+    }
+
+    function handleOnChangeTextEndereco(campo, texto) {
+        const novoEndereco = new Endereco({
+            ...endereco,
+            [campo]: texto
+        })
+        setEndereco(novoEndereco)
+    }
+
     async function cadastrarUsuario() {
         try {
             setLoading(true)
-            await cadastrarEmailSenha(usuario)
+            const usuarioCompleto = new Usuario({
+                ...usuario,
+                endereco: endereco
+            })
+            await cadastrarEmailSenha(usuarioCompleto)
             alert("Cadastro realizado com sucesso!")
         } catch (err) {
             console.error(err)
@@ -33,27 +57,33 @@ function PageCadastro() {
                     <TextInput
                         label="Nome Completo"
                         placeholder="Insira seu nome completo."
-                        value={usuario.nome}
-                        onChangeText={(text) => setUsuario({ ...usuario, nome: text })}
+                        value={usuario.getNome()}
+                        onChangeText={(text) => handleOnChangeTextUsuario("nome", text)}
                     />
                     <TextInput
                         label="E-mail:"
                         placeholder="Insira o seu e-mail."
-                        value={usuario.email}
-                        onChangeText={(text) => setUsuario({ ...usuario, email: text })}
+                        value={usuario.getEmail()}
+                        onChangeText={(text) => handleOnChangeTextUsuario("email", text)}
                     />
                     <TextInput
                         label="Senha:"
                         placeholder="Insira a sua senha."
-                        value={usuario.senha}
+                        value={usuario.getSenha()}
                         secureTextEntry={secureText}
-                        onChangeText={(text) => setUsuario({ ...usuario, senha: text })}
+                        onChangeText={(text) => handleOnChangeTextUsuario("senha", text)}
                         right={
                             <TextInput.Icon
                                 icon="eye"
                                 onPress={() => setSecureText(!secureText)}
                             />
                         }
+                    />
+                    <TextInput
+                        label="Logradouro:"
+                        placeholder="Insira o nome do seu logradouro."
+                        value={endereco.getLogradouro()}
+                        onChangeText={(text) => handleOnChangeTextEndereco("logradouro", text)}
                     />
                     <Button loading={loading} onPress={() => cadastrarUsuario()}>Cadastrar</Button>
                     <Text>Já possui uma conta?</Text>
