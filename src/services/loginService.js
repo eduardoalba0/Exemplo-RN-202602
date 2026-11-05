@@ -29,12 +29,21 @@ function useAuthService() {
 
     const loginEmailSenha = async (usuario) => {
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, usuario.email, usuario.senha);
-            return userCredential
+            await signInWithEmailAndPassword(auth, usuario.email, usuario.senha);
         } catch (error) {
             throw error;
         }
     }
+
+    const buscarUsuario = async (id) => {
+        try {
+            const usuarioBusca = await usuarioRepository.buscarId(id)
+            return usuarioBusca
+        } catch (error) {
+            throw error
+        }
+    }
+
 
     const recuperarSenha = async (usuario) => {
         try {
@@ -44,7 +53,7 @@ function useAuthService() {
         }
     }
 
-    return { cadastrarEmailSenha, loginEmailSenha, recuperarSenha };
+    return { cadastrarEmailSenha, loginEmailSenha, recuperarSenha, buscarUsuario };
 }
 
 export default useAuthService;
