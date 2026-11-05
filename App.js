@@ -8,16 +8,17 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase-init';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUsuarioLogado } from './src/slices/usuarioSlice';
-import { UsuarioRepository } from './src/repositories/UsuarioRepository';
+import useAuthService from "./src/services/loginService";
 
 export default function App() {
   const dispatch = useDispatch();
   const usuarioLogado = useSelector((state) => state.usuario?.usuarioLogado);
+  const { buscarUsuario } = useAuthService()
 
   async function registrarOnAuthChanged() {
     onAuthStateChanged(auth, async (usuario) => {
       if (usuario && usuario.emailVerified) {
-        const usuarioAutenticado = await new UsuarioRepository().buscarId(usuario.uid);
+        const usuarioAutenticado = await buscarUsuario(usuario.uid)
         if (usuarioAutenticado) {
           dispatch(setUsuarioLogado(usuarioAutenticado));
         } else {

@@ -30,10 +30,8 @@ function useAuthService() {
         }
     }
 
-    const loginEmailSenha = async (usuario: Usuario): Promise<Usuario> => {
+    const loginEmailSenha = async (usuario: Usuario): Promise<void> => {
         try {
-            if (!usuario.getSenha()) throw new Error("Senha é obrigatória para o login.");
-
             const userCredential = await signInWithEmailAndPassword(auth, usuario.getEmail(), usuario.getSenha());
 
             if (!userCredential.user.emailVerified) {
@@ -41,13 +39,15 @@ function useAuthService() {
                 throw new Error("Confirme seu e-mail através do link enviado antes de acessar o aplicativo.");
             }
 
-            const usuarioAutenticado = await repository.buscarId(userCredential.user.uid);
+        } catch (error) {
+            throw error;
+        }
+    }
 
-            if (usuarioAutenticado) {
-                return usuarioAutenticado;
-            } else {
-                throw new Error("Dados do usuário não encontrados no banco de dados.");
-            }
+    const buscarUsuario = async (id: string): Promise<Usuario> => {
+        try {
+            const usuarioBusca = repository.buscarId(id)
+            return usuarioBusca
         } catch (error) {
             throw error;
         }
@@ -61,7 +61,7 @@ function useAuthService() {
         }
     }
 
-    return { cadastrarEmailSenha, loginEmailSenha, recuperarSenha };
+    return { cadastrarEmailSenha, loginEmailSenha, recuperarSenha, buscarUsuario };
 }
 
 export default useAuthService;
